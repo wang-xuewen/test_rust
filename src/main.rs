@@ -4,9 +4,13 @@ mod use_rusqlite {
     pub mod sqlite_mem_sample;
     pub mod sqlite_file_sample;
 }
+mod rust_lang {
+    pub mod trait_sample;
+}
 
 fn main() {
     run_sqlite_file_sample();
+    rust_lang::trait_sample::do_area();
 }
 
 fn run_sqlite_file_sample() {
