@@ -79,3 +79,27 @@ pub fn db_select(conn: &Connection) -> Vec<Person> {
 
     people
 }
+
+
+
+pub fn run_sqlite_mem_sample() {
+    let conn: Connection;
+
+    let result = db_conn();
+    match result {
+        Ok(_conn) => {
+            conn = _conn;
+        }
+        Err(err_msg) => {
+            println!("Error: {}", err_msg);
+            return;
+        }
+    }
+
+    let _ = db_create(&conn);
+    let _ = db_insert(&conn);
+    let result = db_select(&conn);
+    for person in result {
+        println!("db select ok. {:?}", person);
+    }
+}
