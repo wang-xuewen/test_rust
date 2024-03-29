@@ -9,6 +9,7 @@ trait Area {
 struct Rectangle<'a, T: Area> {
     width: T,
     height: T,
+    #[allow(dead_code)]
     name: &'a str,
 }
 // 实现 Area trait for Rectangle 结构体

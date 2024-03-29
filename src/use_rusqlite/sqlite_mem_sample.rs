@@ -2,6 +2,7 @@ use rusqlite::{Connection, Result, Statement};
 
 #[derive(Debug)]
 pub struct Person {
+    #[allow(dead_code)]
     id: i32,
     name: String,
     data: Option<Vec<u8>>,
