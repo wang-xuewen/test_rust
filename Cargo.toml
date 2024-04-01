@@ -8,6 +8,9 @@ edition = "2021"
 [dependencies]
 rusqlite = { version = "0.31.0", features = ["bundled"] }
 
+[lib]
+name = "test_rust"
+path = "src/my_lib.rs"
 
 
 

@@ -1,4 +1,3 @@
-// #[cfg(test)]
 use std::cell::RefCell;
 
 use test_rust::rust_lang::borrow_mut;
@@ -23,7 +22,7 @@ impl borrow_mut::Messenger for MockMessenger {
 #[test]
 fn test_111() {
     let x = 5;
-    print!("tests excute...");
+    println!("tests excute...");
     assert_eq!(5, x);
 }
 
