@@ -8,6 +8,10 @@ pub struct LimitTracker<'a, T: Messenger> {
     max: usize,
 }
 
+pub fn sample_print() {
+    println!("sample_print");
+}
+
 impl<'a, T> LimitTracker<'a, T>
 where
     T: Messenger,
