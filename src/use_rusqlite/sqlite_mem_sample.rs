@@ -1,8 +1,14 @@
+
 use rusqlite::{Connection, Result, Statement};
+
+
+
+#[macro_use]
+use crate::log_a;
 
 #[derive(Debug)]
 pub struct Person {
-    #[allow(dead_code)]
+    
     id: i32,
     name: String,
     data: Option<Vec<u8>>,
@@ -10,7 +16,7 @@ pub struct Person {
 
 pub fn db_conn() -> Result<Connection> {
     let conn = Connection::open_in_memory()?;
-    println!("get conn ok");
+    log_a!("get conn ok");
     Ok(conn)
 }
 
@@ -23,7 +29,7 @@ pub fn db_create(conn: &Connection) -> Result<usize> {
         )",
         (), // empty list of parameters.
     )?;
-    println!("db create ok");
+    log_a!("db create ok");
     Ok(ret)
 }
 
@@ -37,7 +43,7 @@ pub fn db_insert(conn: &Connection) -> Result<usize> {
         "INSERT INTO person (name, data) VALUES (?1, ?2)",
         (&me.name, &me.data),
     )?;
-    println!("db insert ok. {:?}", me);
+    log_a!("db insert ok. {:?}", me);
     Ok(ret)
 }
 
@@ -50,7 +56,7 @@ pub fn db_select(conn: &Connection) -> Vec<Person> {
             stmt = s;
         }
         Err(err_msg) => {
-            println!("Error: {}", err_msg);
+            log_a!("Error: {}", err_msg);
             return people;
         }
     }
@@ -68,20 +74,18 @@ pub fn db_select(conn: &Connection) -> Vec<Person> {
                 if let Ok(value) = person {
                     people.push(value);
                 } else {
-                    println!("persion_iter error.");
+                    log_a!("persion_iter error.");
                 }
             }
         }
         Err(err_msg) => {
-            println!("Error: {}", err_msg);
+            log_a!("Error: {}", err_msg);
             return people;
         }
     }
 
     people
 }
-
-
 
 pub fn run_sqlite_mem_sample() {
     let conn: Connection;
@@ -92,7 +96,7 @@ pub fn run_sqlite_mem_sample() {
             conn = _conn;
         }
         Err(err_msg) => {
-            println!("Error: {}", err_msg);
+            log_a!("Error: {}", err_msg);
             return;
         }
     }
@@ -101,6 +105,6 @@ pub fn run_sqlite_mem_sample() {
     let _ = db_insert(&conn);
     let result = db_select(&conn);
     for person in result {
-        println!("db select ok. {:?}", person);
+        log_a!("db select ok. {:?}", person);
     }
 }

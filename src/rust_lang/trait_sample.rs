@@ -1,5 +1,8 @@
 use std::ops::Deref;
 
+#[macro_use]
+use crate::log_a;
+
 // 定义一个 trait，表示可以计算面积的类型
 trait Area {
     fn area(&self) -> f64;
@@ -9,7 +12,6 @@ trait Area {
 struct Rectangle<'a, T: Area> {
     width: T,
     height: T,
-    #[allow(dead_code)]
     name: &'a str,
 }
 // 实现 Area trait for Rectangle 结构体
@@ -51,7 +53,7 @@ pub fn do_area() {
 
     let shapes: Vec<&dyn Area> = vec![&rectangle, &circle];
 
-    println!("Total area: {}", total_area(&shapes));
+    log_a!("Total area: {}", total_area(&shapes));
 }
 
 // 自定义智能指针

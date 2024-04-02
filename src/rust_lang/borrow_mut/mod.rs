@@ -1,9 +1,13 @@
 pub mod rc_refcell;
+pub mod circular_reference;
+
+#[macro_use]
+use crate::log_a;
+
 
 pub trait Messenger {
     fn send(&self, msg: &str);
 }
-#[allow(dead_code)] 
 pub struct LimitTracker<'a, T: Messenger> {
     messenger: &'a T,
     value: usize,
@@ -11,14 +15,13 @@ pub struct LimitTracker<'a, T: Messenger> {
 }
 
 pub fn sample_print() {
-    println!("sample_print");
+    log_a!("sample_print");
 }
 
 impl<'a, T> LimitTracker<'a, T>
 where
     T: Messenger,
 {
-    #[allow(dead_code)] 
     pub fn new(messenger: &T, max: usize) -> LimitTracker<T> {
         LimitTracker {
             messenger,
@@ -26,7 +29,6 @@ where
             max,
         }
     }
-    #[allow(dead_code)] 
     pub fn set_value(&mut self, value: usize) {
         self.value = value;
 

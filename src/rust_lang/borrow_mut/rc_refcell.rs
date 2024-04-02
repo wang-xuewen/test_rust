@@ -1,4 +1,7 @@
-#![allow(dead_code)]
+
+#[macro_use]
+use crate::log_a;
+
 #[derive(Debug)]
 enum List {
     Cons(Rc<RefCell<i32>>, Rc<List>),
@@ -19,7 +22,7 @@ pub fn do_rc_refcell() {
 
     *value.borrow_mut() += 10;
 
-    println!("a after = {:?}", a);
-    println!("b after = {:?}", b);
-    println!("c after = {:?}", c);
+    log_a!("a after = {:?}", a);
+    log_a!("b after = {:?}", b);
+    log_a!("c after = {:?}", c);
 }

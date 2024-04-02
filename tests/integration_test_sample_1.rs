@@ -1,7 +1,14 @@
+#![allow(dead_code)] 
+#![allow(unused_variables)]
+#![allow(unused_assignments)]
+#![allow(unused_attributes)]
 use std::cell::RefCell;
 
 use test_rust::rust_lang::borrow_mut;
 use test_rust::rust_lang::trait_sample;
+
+#[macro_use]
+use test_rust::log_a;
 
 struct MockMessenger {
     sent_messages: RefCell<Vec<String>>,
@@ -22,7 +29,7 @@ impl borrow_mut::Messenger for MockMessenger {
 #[test]
 fn test_111() {
     let x = 5;
-    println!("tests excute...");
+    log_a!("tests excute...");
     assert_eq!(5, x);
 }
 
