@@ -1,5 +1,6 @@
 pub mod rc_refcell;
 pub mod circular_reference;
+pub mod circular_reference_no;
 
 #[macro_use]
 use crate::log_a;
