@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-#[macro_use]
+// #[macro_use]
 use crate::log_a;
 
 // 定义一个 trait，表示可以计算面积的类型

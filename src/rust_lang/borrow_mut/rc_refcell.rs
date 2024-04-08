@@ -1,5 +1,5 @@
 
-#[macro_use]
+// #[macro_use]
 use crate::log_a;
 
 #[derive(Debug)]
