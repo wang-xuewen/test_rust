@@ -1,6 +1,7 @@
 pub mod thread_pool;
 use crate::log_a;
 
+use ctrlc;
 use std::env;
 use std::fs;
 use std::io;
@@ -8,6 +9,8 @@ use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 
 pub fn do_web_server() {
     let listener = TcpListener::bind("192.168.15.189:7878").unwrap();
@@ -16,16 +19,35 @@ pub fn do_web_server() {
 
     let mut cnt: i32 = 0;
 
+    let running = Arc::new(AtomicBool::new(true));
+    let r = running.clone();
+
+    // 设置 Ctrl+C 信号的处理函数
+    ctrlc::set_handler(move || {
+        log_a!("Received Ctrl+C, exiting...");
+        r.store(false, Ordering::SeqCst);
+    })
+    .expect("Error setting Ctrl+C handler");
+
     // for stream in listener.incoming().take(5) {
     for stream in listener.incoming() {
-        let stream = stream.unwrap();
+        if !running.load(Ordering::SeqCst) {
+            break;
+        }
+        match stream {
+            Ok(stream) => {
+                // 在这里处理连接
+                cnt += 1;
+                log_a!("execute {}", cnt);
 
-        cnt += 1;
-        log_a!("execute {}", cnt);
-
-        pool.execute(|| {
-            handle_connection(stream);
-        });
+                pool.execute(|| {
+                    handle_connection(stream);
+                });
+            }
+            Err(e) => {
+                log_a!("Error accepting connection: {}", e);
+            }
+        }
     }
 
     log_a!("Shutting down.");
