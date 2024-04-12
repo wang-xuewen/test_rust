@@ -20,10 +20,18 @@ pub fn do_web_server() {
     // 创建一个通道，用于在两个线程之间传递消息
     let (tx, rx) = mpsc::channel();
 
+    let addr = env::args()
+        .skip(1)
+        .next()
+        .unwrap_or("192.168.15.189:7878".to_owned());
+
     let listener = Arc::new(Mutex::new(
-        TcpListener::bind("192.168.15.189:7878").unwrap(),
+        // TcpListener::bind("192.168.15.189:7878").unwrap(),
+        TcpListener::bind(&addr).unwrap(),
     ));
     let listener_clone = listener.clone();
+
+    log_a!("do_web_server listening on {} ...", addr);
 
     let pool = thread_pool::ThreadPool::new(4);
 
@@ -37,7 +45,7 @@ pub fn do_web_server() {
     ctrlc::set_handler(move || {
         log_a!("Received Ctrl+C, exiting...");
         r.store(false, Ordering::SeqCst);
-        tx.send("1").unwrap();
+        tx.send("do_web_server").unwrap();
     })
     .expect("Error setting Ctrl+C handler");
 

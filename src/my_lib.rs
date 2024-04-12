@@ -8,6 +8,7 @@ use std::usize;
 pub mod rust_lang;
 pub mod use_rusqlite;
 pub mod web_server_sample;
+pub mod my_redis_sync;
 // use chrono::{DateTime, Local};
 
 #[macro_export]

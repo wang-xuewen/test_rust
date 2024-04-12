@@ -8,6 +8,8 @@ edition = "2021"
 rusqlite = { version = "0.31.0", features = ["bundled"] }
 ctrlc = "3.1"
 chrono = "0.4.37"
+lazy_static = "1.2.0"
+resp = { git = "https://github.com/creativcoder/resp" }
 
 [lib]
 name = "test_rust"

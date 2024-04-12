@@ -15,6 +15,8 @@ use test_rust::use_rusqlite::{sqlite_file_sample, sqlite_mem_sample};
 use test_rust::rust_lang::borrow_mut;
 use test_rust::rust_lang::trait_sample;
 use test_rust::web_server_sample;
+use test_rust::my_redis_sync;
+use std::thread;
 
 fn main() {
     log_a!("start ...");
@@ -28,7 +30,12 @@ fn main() {
     sqlite_mem_sample::run_sqlite_mem_sample();
     trait_sample::do_area();
     trait_sample::do_mybox();
+
+    thread::spawn(|| {
+        my_redis_sync::do_my_redis_sync();
+    });
     web_server_sample::do_web_server();
+   
 
     // test_rust::lib_fn_sample();
     log_a!("main ok....");
