@@ -1,4 +1,8 @@
-// 自建简易版redis同步服务器例子
+/// 自建简易版redis服务器例子(同步模式，多客户端顺序执行)
+/// 
+/// 可以使用src/redis-cli来测试
+/// ./redis-cli -h 127.0.0.1 -p 6378
+/// 
 pub mod commands;
 
 use crate::log_a;
