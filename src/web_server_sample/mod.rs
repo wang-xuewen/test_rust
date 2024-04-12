@@ -76,9 +76,9 @@ pub fn do_web_server() {
 
     let _ = call_one();
 
-    log_a!("Sleeping for 2 seconds...");
+    log_a!("Sleeping for 1 seconds...");
     thread::sleep(Duration::from_secs(1));
-    log_a!("Awake after 2 seconds!");
+    log_a!("Awake after 1 seconds!");
 
     log_a!("Shutting down.");
 }

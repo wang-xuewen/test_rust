@@ -7,6 +7,7 @@ edition = "2021"
 [dependencies]
 rusqlite = { version = "0.31.0", features = ["bundled"] }
 ctrlc = "3.1"
+chrono = "0.4.37"
 
 [lib]
 name = "test_rust"

@@ -8,14 +8,23 @@ use std::usize;
 pub mod rust_lang;
 pub mod use_rusqlite;
 pub mod web_server_sample;
+// use chrono::{DateTime, Local};
 
 #[macro_export]
 macro_rules! log_a {
     ($($arg:tt)*) => {{
+
+        // 获取当前本地时间
+    let local_time: chrono::DateTime<chrono::Local> = chrono::Local::now();
+
+    // 格式化时间为字符串
+    // let formatted_time = local_time.format("%Y-%m-%d %H:%M:%S").to_string();
+    let formatted_time = local_time.format(" %m-%d %H:%M:%S").to_string();
+
         let current_file = file!();
         let current_line = line!();
-        let line_head = format!("[{}:{}]: ", current_file, current_line);
-        let line_head_fix = $crate::fixed_length_string(&line_head, 40);
+        let line_head = format!("[{}:{}:{}]: ",current_file, current_line,formatted_time);
+        let line_head_fix = $crate::fixed_length_string(&line_head, 45);
 
         // println!("[{}:{}]: {}", current_file, current_line, format!($($arg)*));
         println!("{}{}", line_head_fix, format!($($arg)*));
@@ -23,7 +32,7 @@ macro_rules! log_a {
     }};
 }
 
-pub fn lib_fn_sample(){
+pub fn lib_fn_sample() {
     log_a!("lib_fn_sample")
 }
 
