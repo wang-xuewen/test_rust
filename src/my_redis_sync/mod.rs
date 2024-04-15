@@ -1,8 +1,8 @@
 /// 自建简易版redis服务器例子(同步模式，多客户端顺序执行)
-/// 
+///
 /// 可以使用src/redis-cli来测试
 /// ./redis-cli -h 127.0.0.1 -p 6378
-/// 
+///
 pub mod commands;
 
 use crate::log_a;
@@ -34,14 +34,18 @@ pub fn do_my_redis_sync() {
 
     // let listener = Arc::new(Mutex::new(TcpListener::bind(&addr).unwrap()));
     // let listener_clone = listener.clone();
-    let listener =TcpListener::bind(&addr).unwrap();
+    let listener = TcpListener::bind(&addr).unwrap();
 
     log_a!("rudis_sync listening on {} ...", addr);
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         log_a!("New connection from: {:?}", stream);
-        handle_client(stream);
+
+        thread::spawn(|| {
+            handle_client(stream);
+        });
+
         log_a!("New connection done");
 
         // thread::sleep(Duration::from_millis(3000));
@@ -50,18 +54,17 @@ pub fn do_my_redis_sync() {
 
 fn handle_client(stream: TcpStream) {
     let mut stream = BufReader::new(stream);
-    log_a!("========1=");
+    log_a!("handle_client: start decode");
     let decoder = Decoder::new(&mut stream).decode();
-    log_a!("========2=");
+    log_a!("handle_client: after decode");
     match decoder {
         Ok(v) => {
             let reply = process_client_request(v);
-            log_a!("========3=");
+            log_a!("handle_client: write replay ...");
             if !reply.is_empty() {
-                log_a!("handle_client start");
                 stream.get_mut().write_all(&reply).unwrap();
                 log_a!("handle_client end");
-            }else {
+            } else {
                 log_a!("handle_client reply is empty");
             }
         }

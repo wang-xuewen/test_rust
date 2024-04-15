@@ -33,7 +33,7 @@ pub fn process_client_request(decoded_msg: Value) -> Vec<u8> {
 
 pub fn handle_get(v: Vec<Value>) -> Result<Value, Value> {
 
-    log_a!("handle_get {:?}",&v[0]);
+    let cmd = &v[0];
 
     let v = v.iter().skip(1).collect::<Vec<_>>();
     if v.is_empty() {
@@ -41,6 +41,9 @@ pub fn handle_get(v: Vec<Value>) -> Result<Value, Value> {
             "Expected 1 argument for GET command".to_string(),
         ));
     }
+
+    log_a!("handle_get {:?} {:?}",cmd,&v[0]);
+
     let db_ref = RUDIS_DB.lock().unwrap();
     let reply = if let Value::Bulk(ref s) = &v[0] {
         db_ref
@@ -54,12 +57,18 @@ pub fn handle_get(v: Vec<Value>) -> Result<Value, Value> {
 }
 
 pub fn handle_set(v: Vec<Value>) -> Result<Value, Value> {
+
+    let cmd = &v[0];
+
     let v = v.iter().skip(1).collect::<Vec<_>>();
     if v.is_empty() || v.len() < 2 {
         return Err(Value::Error(
             "Expected 2 arguments for SET command".to_string(),
         ));
     }
+
+    log_a!("handle_set {:?} {:?} {:?}",cmd,&v[0],&v[1]);
+
     match (&v[0], &v[1]) {
         (Value::Bulk(k), Value::Bulk(v)) => {
             let _ = RUDIS_DB
