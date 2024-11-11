@@ -264,6 +264,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "rust_utils"
+version = "0.1.0"
+source = "git+https://github.com/wang-xuewen/rust_utils#7125ad60944d5d9d54e0cce25ed43a709dc7c9c4"
+
+[[package]]
 name = "smallvec"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -289,6 +294,7 @@ dependencies = [
  "lazy_static",
  "resp",
  "rusqlite",
+ "rust_utils",
 ]
 
 [[package]]

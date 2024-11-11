@@ -3,6 +3,7 @@
 #![allow(unused_assignments)]
 #![allow(unused_attributes)]
 
+use rust_utils::add;
 use test_rust::log_a;
 
 // mod use_rusqlite {
@@ -29,6 +30,9 @@ fn main() {
     sqlite_mem_sample::run_sqlite_mem_sample();
     trait_sample::do_area();
     trait_sample::do_mybox();
+
+    let add_result = add(1, 2);
+    log_a!("1 add 2: {:?}", add_result);
 
     thread::spawn(|| {
         my_redis_sync::do_my_redis_sync();

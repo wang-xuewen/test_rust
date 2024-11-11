@@ -10,6 +10,8 @@ ctrlc = "3.1"
 chrono = "0.4.37"
 lazy_static = "1.2.0"
 resp = { git = "https://github.com/creativcoder/resp" }
+rust_utils = { git = "https://github.com/wang-xuewen/rust_utils" }
+
 
 [lib]
 name = "test_rust"
