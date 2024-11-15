@@ -150,3 +150,81 @@ cargo run -p client
 - 服务端将消息广播给所有连接的客户端，实现了简单的聊天功能。
 
 这就是一个简单的命令行聊天应用的基本架构。
+
+
+
+
+
+
+
+
+
+### 方案 2：使用第三方库 `log4rs` 自动管理日志轮转
+
+`log4rs` 是一个功能更强大的日志库，它内置了日志轮转和自动保留策略，能够实现按日期回滚并自动保留最近的日志。
+
+#### 1. 添加 `log4rs` 依赖：
+
+在 `Cargo.toml` 中添加 `log4rs`：
+
+```toml
+[dependencies]
+log = "0.4"
+log4rs = "1.0"
+chrono = "0.4"
+```
+
+#### 2. 配置 `log4rs`：
+
+`log4rs` 允许通过配置文件来设置日志轮转和日志保留策略。以下是一个按日期回滚并保留最近 7 天日志的配置示例：
+
+```yaml
+# log4rs.yml
+appenders:
+  - type: rolling_file
+    path: "log/log_{date}.log"
+    policy:
+      type: compound
+      trigger:
+        type: size
+        limit: 10MB
+      rollover:
+        type: time
+        pattern: "%Y-%m-%d"
+    encoder:
+      type: pattern
+      pattern: "[{d}] [{l}] {m}\n"
+
+root:
+  level: info
+  appenders:
+    - rolling_file
+```
+
+#### 3. 在 `main.rs` 中加载配置：
+
+```rust
+use log::{info, warn};
+use log4rs;
+
+fn main() {
+    // 加载 log4rs 配置
+    log4rs::init_file("log4rs.yml", Default::default()).unwrap();
+
+    // 输出日志
+    info!("This is an info message.");
+    warn!("This is a warning message.");
+}
+```
+
+### 结果：
+
+- **`log4rs`** 会根据配置文件生成按日期回滚的日志文件，并且支持文件大小限制、日志过期清理等功能。
+- **自动保留 7 天日志**：通过配置文件中的时间轮转和触发策略，`log4rs` 可以自动管理日志文件并删除过期日志。
+
+### 总结：
+
+- **`fern`**：不直接支持自动保留 7 天日志，但可以通过编写清理逻辑实现。
+- **`log4rs`**：提供了更强大的日志管理功能，包括日志文件的轮转、大小限制以及按时间保留日志，适合需要自动保留一定天数日志的场景。
+
+如果你希望使用现成的日志轮转和清理功能，推荐使用 `log4rs`。如果你倾向于自己实现日志清理逻辑，`fern` 配合 `chrono` 也能满足需求。

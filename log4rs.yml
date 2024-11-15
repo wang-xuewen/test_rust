@@ -1,0 +1,21 @@
+appenders:
+    logfile:
+        kind: rolling_file
+        path: "log/log.log"
+        policy:
+            kind: compound
+            trigger:
+                kind: size
+                limit: 10mb # 每当日志文件达到 10MB 时触发滚动
+            roller:
+                kind: fixed_window
+                base: 1
+                count: 7
+                pattern: "log/log_{}.log" # 生成的滚动文件名
+        encoder:
+            pattern: "[{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}\n"
+
+root:
+    level: info
+    appenders:
+        - logfile

@@ -3,6 +3,8 @@
 #![allow(unused_assignments)]
 #![allow(unused_attributes)]
 
+use log::{error, info, warn};
+use log4rs;
 use rust_utils::add;
 use test_rust::log_a;
 
@@ -40,4 +42,12 @@ fn main() {
 
     // test_rust::lib_fn_sample();
     log_a!("main ok....");
+
+    // log4rs sample
+    // 加载 log4rs 配置
+    log4rs::init_file("log4rs.yml", Default::default()).unwrap();
+    // 输出日志
+    info!("This is an info message.");
+    warn!("This is a warning message.");
+    error!("This is an error message.");
 }
