@@ -1,21 +1,27 @@
 appenders:
-    logfile:
+    stdout:
+        kind: console
+        encoder:
+            pattern: "[{d(%Y-%m-%dT%H:%M:%S%.6f)} {h({l}):<5.5} {M}] {m}{n}"
+        filters:
+            - kind: threshold
+              level: debug
+    info_file:
         kind: rolling_file
-        path: "log/log.log"
+        path: "log/info.log"
+        encoder:
+            pattern: "[{d(%Y-%m-%dT%H:%M:%S%.6f)} {h({l}):<5.5} {M}] {m}{n}"
         policy:
-            kind: compound
             trigger:
-                kind: size
-                limit: 10mb # 每当日志文件达到 10MB 时触发滚动
+                kind: time
+                interval: 1 day
             roller:
                 kind: fixed_window
-                base: 1
+                pattern: "log/info-{}.log"
+                base: 0
                 count: 7
-                pattern: "log/log_{}.log" # 生成的滚动文件名
-        encoder:
-            pattern: "[{d(%Y-%m-%d %H:%M:%S)}] [{l}] {m}\n"
-
 root:
-    level: info
+    level: debug
     appenders:
-        - logfile
+        - stdout
+        - info_file
