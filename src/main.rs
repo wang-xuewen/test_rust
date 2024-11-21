@@ -49,16 +49,16 @@ fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
     // log4rs::init_file("log4rs.yml", Default::default()).unwrap();
     // 输出日志
-    // debug!("This is an debug message.");
-    // info!("This is an info message.");
-    // warn!("This is a warning message.");
-    // error!("This is an error message.");
+    debug!("This is an debug message.");
+    info!("This is an info message.");
+    warn!("This is a warning message.");
+    error!("This is an error message.");
 
-    loop {
-        thread::sleep(Duration::from_secs(1));
-        debug!("This is an debug message.");
-        info!("This is an info message.");
-        warn!("This is a warning message.");
-        error!("This is an error message.");
-    }
+    // loop {
+    //     thread::sleep(Duration::from_secs(1));
+    //     debug!("This is an debug message.");
+    //     info!("This is an info message.");
+    //     warn!("This is a warning message.");
+    //     error!("This is an error message.");
+    // }
 }

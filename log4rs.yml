@@ -17,7 +17,7 @@ appenders:
                 interval: 1 day
             roller:
                 kind: fixed_window
-                pattern: "log/info-{}.log"
+                pattern: "log/info-{d(%Y.%m.%d)}.log"
                 base: 0
                 count: 7
 root:
