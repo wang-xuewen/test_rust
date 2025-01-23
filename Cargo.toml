@@ -16,6 +16,9 @@ rust_utils = { git = "https://github.com/wang-xuewen/rust_utils" }
 log = "0.4"
 log4rs = "1.3.0"
 
+rsa = "0.7"  # RSA 加密库
+rand = "0.8" # 随机数生成库
+
 
 [lib]
 name = "test_rust"
