@@ -2,9 +2,10 @@ use log::info;
 use log4rs;
 use rand::rngs::OsRng;
 use rsa::pkcs1::DecodeRsaPrivateKey;
+use rsa::pkcs1::DecodeRsaPublicKey;
 use rsa::pkcs1::EncodeRsaPrivateKey; // 用于导出 PKCS#1 PEM 格式
+use rsa::pkcs1::EncodeRsaPublicKey;
 use rsa::{PaddingScheme, PublicKey, RsaPrivateKey, RsaPublicKey}; // 用于从 PEM 解析私钥
-
 pub fn rsa_sample() {
     // -------------------------
     // 创建一个随机数生成器
@@ -52,8 +53,25 @@ eY7i0K6c9dKEiAWBsvd3C8/ktcXSps8wjxGVH+X/2Re316biQfk6QV8=
         RsaPrivateKey::from_pkcs1_pem(private_pem_str).expect("Failed to parse private key");
     println!("Private key successfully loaded!");
 
-    info!("start generating public key");
-    let public_key = RsaPublicKey::from(&private_key);
+    // info!("start generating public key");
+    // let public_key = RsaPublicKey::from(&private_key);
+    // let public_pem = public_key
+    //     .to_pkcs1_pem(rsa::pkcs8::LineEnding::LF)
+    //     .expect("Failed to encode public key");
+    // info!("Public Key PEM:\n{}", public_pem.as_str());
+
+    let public_pem_str = r#"-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEA4gRE9HOERcEUhKSNgqYtnVW9LIy+b5qM+jTEDoi956DhTytIAx+p
+hOOrC/cI68+XXnPFZsNHy7ZxC2nONEzNYuS7ev9qxAxhhoRYLXDhsuqVsPg8KuJA
+JRSDAhpdcw39vij4nccnlAjjFye73Qo7Mb7Gd7YAFBtX81I/u58QZrTqHVwkpqZN
+WB+2YK//XV35PcOquKE4K9qyQfAydMKEmDjj6Q1yj6XoWJlaMspG/WRCUMM6G52J
+P0Ln2gG3F5wFIy3jbYDq7AOVHkzX+ZHmlbCzceOVWBsBtfy8sjxOfFcdVGHOKgQE
+P6fuBV/ohqqKDCwAGoA2RzIdkjtY6msWlwIDAQAB
+-----END RSA PUBLIC KEY-----"#;
+
+    let public_key =
+        RsaPublicKey::from_pkcs1_pem(public_pem_str).expect("Failed to parse public key");
+    println!("Public key successfully loaded!");
 
     // 要加密的字符串
     let data = "Hello, RSA encryption!";
